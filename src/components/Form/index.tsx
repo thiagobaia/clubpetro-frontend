@@ -1,55 +1,41 @@
 
-import { FormEvent, useState } from "react";
+import React, {FormEvent, useContext, useEffect, useState} from "react";
 import {ContainerForm, BoxForm, Inputs, Select, Buttons, Input2} from "./styles";
-import {api} from "../../services/api";
+import { TransactionContext} from "../../TransactionContext";
 
 import InputMask from "react-input-mask";
 
-interface TransactionInput {
-  pais: string;
-  local: string;
-  meta: string;
-}
 
 export const Form: React.FC  = () => {
 
+  const {createTransaction} = useContext(TransactionContext);
 
-  const [transactions, setTransactions] = useState<TransactionInput[]>([]);
+  const { transactionFlag } = useContext(TransactionContext);
 
-  
   const [pais, setPais] = useState("");
   const [local, setLocal] = useState("");
   const [meta, setMeta] = useState("");
 
+  const handleCreateNewTransaction = async (e: FormEvent) => {
 
-  const handleCreateNewTransaction = async (event: FormEvent) => {
-    event.preventDefault();
+    e.preventDefault();
 
-    const data =({
+    await createTransaction({
       pais,
       local,
-      meta,
-    });
+      meta
 
-    const response = await api.post('/cards', data)
-    
-    const {transaction} = response.data
+    })
 
-    setTransactions([
-      ...transactions,
-      transaction,
-  ])
+    setPais('')
+    setLocal('')
+    setMeta('')
 
-    setPais("");
-    setLocal("");
-    setMeta("");
-
-  };
-
+  }
 
   return (
     <ContainerForm>
-      <BoxForm onSubmit={handleCreateNewTransaction}>
+      <BoxForm onSubmit={(e) => handleCreateNewTransaction(e)}>
       <label>Pais</label>
         <Select
           placeholder="Selecione um Pais"
@@ -58,6 +44,10 @@ export const Form: React.FC  = () => {
           onChange={(event) => setPais(event.target.value)}
         >
           <option value="">Selecione...</option>
+
+          {transactionFlag.map((paises, key) => (
+            <option>{paises.name}</option>
+          ))}
         </Select>
         <label>Local</label>
         <Inputs
@@ -74,7 +64,7 @@ export const Form: React.FC  = () => {
           onChange={(event: any) => setMeta(event.target.value)}
         />
        
-        <Buttons type="submit">Cadastrar</Buttons>
+        <Buttons type="submit">Adicionar</Buttons>
       </BoxForm>
     </ContainerForm>
   );
