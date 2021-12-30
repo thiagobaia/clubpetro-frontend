@@ -1,6 +1,6 @@
 import { Home } from "./pages/Home";
 import { GlobalStyle } from "./styles/global";
-import {TransactionProvider} from "./TransactionContext";
+import { TransactionProvider } from "./TransactionContext";
 
 function App() {
   return (
