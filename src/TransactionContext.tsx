@@ -1,11 +1,10 @@
 import { createContext, useEffect, useState, ReactNode } from "react";
 import { api, rest } from "./services/api";
-import axios from "axios";
 
 interface IFlag {
   name: string;
   flags: {
-    png: string;
+  png: string;
   };
 }
 interface ITransaction {
@@ -27,6 +26,7 @@ interface TransactionsProviderProps {
 interface TransactionContextData {
   transactionFlag: IFlag[];
   transactions: ITransaction[];
+  removeTransaction: (id: number) => void;
   createTransaction: (transaction: TransactionInput) => Promise<void>;
 }
 
@@ -36,7 +36,7 @@ export const TransactionContext = createContext<TransactionContextData>(
 
 export const TransactionProvider = ({
   children,
-}: TransactionsProviderProps) => {
+}: TransactionsProviderProps): JSX.Element => {
   const [transactionFlag, setTransactionFlag] = useState<IFlag[]>([]);
   const [transactions, setTransactions] = useState<ITransaction[]>([]);
 
@@ -49,14 +49,33 @@ export const TransactionProvider = ({
   }, []);
 
   const createTransaction = async (transactionInput: ITransaction) => {
-    const response = await api.post("/cards", transactionInput);
+    await api.post("/cards", transactionInput);
 
     setTransactions([...transactions, transactionInput]);
   };
 
+  
+
+  const removeTransaction = async (id: number) => {
+    const dados = [...transactions];
+
+    await api.delete(`/cards/${id}`);
+
+    const nova = dados.filter((cont) => {
+      return cont.id !== id;
+    });
+
+    setTransactions(nova);
+  };
+
   return (
     <TransactionContext.Provider
-      value={{ transactionFlag, transactions, createTransaction }}
+      value={{
+        transactionFlag,
+        transactions,
+        createTransaction,
+        removeTransaction,
+      }}
     >
       {children}
     </TransactionContext.Provider>

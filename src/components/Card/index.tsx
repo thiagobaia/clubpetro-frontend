@@ -9,16 +9,20 @@ import {
 } from "./style";
 import pen from "../../img/icons/pen.svg";
 import close from "../../img/icons/close.svg";
-import axios from "axios";
+
+
 
 export const Card: React.FC = () => {
   const { transactionFlag } = useContext(TransactionContext);
   const { transactions } = useContext(TransactionContext);
+  const { removeTransaction } = useContext(TransactionContext);
 
   // Functions App
 
   const DeleteCard = async (id: any) => {
-    return await axios.delete(`http://localhost:3004/cards/${id}`);
+    console.log(id)
+
+    await removeTransaction(id)
   };
 
   const UpdateCard = (id: any) => {
@@ -56,6 +60,7 @@ export const Card: React.FC = () => {
               <div style={{ display: "block" }}>
                 <p>Local: {option.local}</p>
                 <p>Meta: {option.meta}</p>
+                <p>Meta: {option.id}</p>
               </div>
             </CardItem>
           ))
