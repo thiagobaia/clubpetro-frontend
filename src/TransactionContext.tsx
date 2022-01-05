@@ -50,8 +50,10 @@ export const TransactionProvider = ({
 
   const createTransaction = async (transactionInput: ITransaction) => {
     await api.post("/cards", transactionInput);
+    
+    const transactions = await api.get<ITransaction[]>("/cards");
 
-    setTransactions([...transactions, transactionInput]);
+    setTransactions(transactions.data);
   };
 
   

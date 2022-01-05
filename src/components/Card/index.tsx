@@ -20,8 +20,6 @@ export const Card: React.FC = () => {
   // Functions App
 
   const DeleteCard = async (id: any) => {
-    console.log(id)
-
     await removeTransaction(id)
   };
 
@@ -60,7 +58,6 @@ export const Card: React.FC = () => {
               <div style={{ display: "block" }}>
                 <p>Local: {option.local}</p>
                 <p>Meta: {option.meta}</p>
-                <p>Meta: {option.id}</p>
               </div>
             </CardItem>
           ))

@@ -31,7 +31,7 @@ export const ImgContainer = styled.span`
   width: 56px;
   height: 34px;
   flex-direction: column;
-  margin-top: 15px;
+  margin: 1rem 0;
 `
 export const IconContainer = styled.span`
   margin-top: 15px;
