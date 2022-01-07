@@ -10,12 +10,16 @@ import {
 import pen from "../../img/icons/pen.svg";
 import close from "../../img/icons/close.svg";
 
+interface HeaderProps {
+  onOpenNewTransactionModal: () => void;
+}
 
+export const Card = ({onOpenNewTransactionModal}: HeaderProps) => {
 
-export const Card: React.FC = () => {
   const { transactionFlag } = useContext(TransactionContext);
   const { transactions } = useContext(TransactionContext);
   const { removeTransaction } = useContext(TransactionContext);
+  const { editInfo } = useContext(TransactionContext);
 
   // Functions App
 
@@ -23,8 +27,9 @@ export const Card: React.FC = () => {
     await removeTransaction(id)
   };
 
-  const UpdateCard = (id: any) => {
-    alert(id);
+  const EditCard = async (id: any) => {
+    onOpenNewTransactionModal()
+    await editInfo(id)
   };
 
   return (
@@ -41,7 +46,7 @@ export const Card: React.FC = () => {
 
                 <IconContainer>
                   <IconContainer>
-                    <i onClick={() => UpdateCard(option.id)}>
+                    <i onClick={() => EditCard(option.id)}>
                       <img src={pen} alt="" />
                     </i>
                     <i onClick={() => DeleteCard(option.id)}>

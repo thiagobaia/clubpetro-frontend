@@ -26,6 +26,7 @@ interface TransactionsProviderProps {
 interface TransactionContextData {
   transactionFlag: IFlag[];
   transactions: ITransaction[];
+  editInfo: (id: number ) => void;
   removeTransaction: (id: number) => void;
   createTransaction: (transaction: TransactionInput) => Promise<void>;
 }
@@ -56,7 +57,6 @@ export const TransactionProvider = ({
     setTransactions(transactions.data);
   };
 
-  
 
   const removeTransaction = async (id: number) => {
     const dados = [...transactions];
@@ -70,6 +70,19 @@ export const TransactionProvider = ({
     setTransactions(nova);
   };
 
+  const editInfo = async (id: any) => {
+
+  const dados = [...transactions];
+
+  const datas = dados.find( item => item.id === id)
+
+  const response = await api.put(`/cards/${id}`, datas);
+
+  console.log(response.data);
+
+  };
+
+
   return (
     <TransactionContext.Provider
       value={{
@@ -77,6 +90,7 @@ export const TransactionProvider = ({
         transactions,
         createTransaction,
         removeTransaction,
+        editInfo
       }}
     >
       {children}

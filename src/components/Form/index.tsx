@@ -35,7 +35,7 @@ export const Form: React.FC = () => {
     resolver: yupResolver(schema)
 });
 
-  // const {errors} = formState
+  const {errors} = formState
 
   const handleCreateNewTransaction: SubmitHandler<FormValues> = async () => {
    
