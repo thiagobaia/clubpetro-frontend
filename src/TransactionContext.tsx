@@ -4,7 +4,7 @@ import { api, rest } from "./services/api";
 interface IFlag {
   name: string;
   flags: {
-  png: string;
+    png: string;
   };
 }
 interface ITransaction {
@@ -26,7 +26,9 @@ interface TransactionsProviderProps {
 interface TransactionContextData {
   transactionFlag: IFlag[];
   transactions: ITransaction[];
-  editInfo: (id: number ) => void;
+  itemestado: ITransaction[];
+  getId: (id: number) => void;
+  editInfo: (sets: ITransaction) => void;
   removeTransaction: (id: number) => void;
   createTransaction: (transaction: TransactionInput) => Promise<void>;
 }
@@ -40,6 +42,7 @@ export const TransactionProvider = ({
 }: TransactionsProviderProps): JSX.Element => {
   const [transactionFlag, setTransactionFlag] = useState<IFlag[]>([]);
   const [transactions, setTransactions] = useState<ITransaction[]>([]);
+  const [itemestado, setItemestado] = useState<ITransaction[]>([]);
 
   useEffect(() => {
     rest.get("/").then((response) => setTransactionFlag(response.data));
@@ -51,12 +54,11 @@ export const TransactionProvider = ({
 
   const createTransaction = async (transactionInput: ITransaction) => {
     await api.post("/cards", transactionInput);
-    
+
     const transactions = await api.get<ITransaction[]>("/cards");
 
     setTransactions(transactions.data);
   };
-
 
   const removeTransaction = async (id: number) => {
     const dados = [...transactions];
@@ -70,18 +72,21 @@ export const TransactionProvider = ({
     setTransactions(nova);
   };
 
-  const editInfo = async (id: any) => {
+  const editInfo = async (sets: ITransaction) => {
+    const datas = { pais: sets.pais, local: sets.local, meta: sets.meta };
 
-  const dados = [...transactions];
+    await api.put(`/cards/${sets.id}`, datas);
 
-  const datas = dados.find( item => item.id === id)
+    const transactions = await api.get<ITransaction[]>("/cards");
 
-  const response = await api.put(`/cards/${id}`, datas);
-
-  console.log(response.data);
-
+    setTransactions(transactions.data);
   };
 
+  const getId = async (id: number) => {
+    const response = await api.get(`/cards/${id}`);
+
+    setItemestado({ id, ...response.data });
+  };
 
   return (
     <TransactionContext.Provider
@@ -90,7 +95,9 @@ export const TransactionProvider = ({
         transactions,
         createTransaction,
         removeTransaction,
-        editInfo
+        editInfo,
+        getId,
+        itemestado,
       }}
     >
       {children}

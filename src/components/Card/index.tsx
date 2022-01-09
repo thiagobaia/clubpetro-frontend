@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext} from "react";
 import { TransactionContext } from "../../TransactionContext";
 import {
   Cards,
@@ -19,7 +19,9 @@ export const Card = ({onOpenNewTransactionModal}: HeaderProps) => {
   const { transactionFlag } = useContext(TransactionContext);
   const { transactions } = useContext(TransactionContext);
   const { removeTransaction } = useContext(TransactionContext);
-  const { editInfo } = useContext(TransactionContext);
+  const { editInfo, getId} = useContext(TransactionContext);
+
+
 
   // Functions App
 
@@ -28,8 +30,9 @@ export const Card = ({onOpenNewTransactionModal}: HeaderProps) => {
   };
 
   const EditCard = async (id: any) => {
+    getId(id)
     onOpenNewTransactionModal()
-    await editInfo(id)
+    
   };
 
   return (

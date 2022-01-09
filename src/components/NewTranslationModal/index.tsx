@@ -1,8 +1,9 @@
 import Modal from 'react-modal';
-import { Container, TransactionTypeContainer } from './styles';
+import { Container} from './styles';
 import {FormEvent, useState, useContext} from 'react';
 import { TransactionContext } from '../../TransactionContext';
 import close from "../../img/icons/close.svg";
+import React from 'react';
 
 interface NewTranslationModalProps {
   isOpen: boolean;
@@ -14,19 +15,25 @@ export const NewTranslationModal = ({
   onRequestClose,
 }: NewTranslationModalProps) => {
 
+
+  const { editInfo, itemestado, transactionFlag} = useContext(TransactionContext);
+
+
   const [pais, setPais] = useState('');
   const [local, setLocal] = useState('');
   const [meta, setMeta] = useState('');
 
-  const { editInfo } = useContext(TransactionContext);
+
 
   const handleCreateNewTransaction  = async (event: FormEvent) => {
     event.preventDefault();
 
-    const datas = {pais, local, meta}
-    console.log(datas)
+    const datas  = {id: itemestado.id, pais, local, meta}
 
-    
+
+    await editInfo(datas)
+
+
     setPais('');
     setLocal('')
     setMeta('')
@@ -51,8 +58,22 @@ export const NewTranslationModal = ({
 
       <Container onSubmit={handleCreateNewTransaction}>
         <h2>Cadastrar Transações</h2>
-        <input type="text"  value={pais} onChange={event => setPais(event.target.value) }/>
+        <label>Pais</label>
+        <select
+          placeholder="Selecione um Pais"
+          value={pais}
+          onChange={(event) => setPais(event.target.value)}
+        >
+          <option value="">Selecione...</option>
+          {transactionFlag.map((paises, key) => (
+            <React.Fragment key={key}>
+              <option>{paises.name}</option>
+            </React.Fragment>
+          ))}
+        </select>
+        <label>Local</label>
         <input type="text"  value={local} onChange={event => setLocal(event.target.value) }/>
+        <label>Meta</label>
         <input type="text"  value={meta} onChange={event => setMeta(event.target.value) }/>
         <button type="submit">Cadastrar</button>
       </Container>
