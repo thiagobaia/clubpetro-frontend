@@ -29,28 +29,24 @@ Para rodar esse projeto na sua maquina, é necessário ter duas ferramentas inst
 
 - Clone o projeto com os comando abaixo:
 ```
-$ https://github.com/thiagobaia/frontend-challenge-talent.git
+$ https://github.com/thiagobaia/clubpetro-frontend.git
 
-$ cd frontend-challenge-talent
+$ cd clubpetro-frontend
 ```
 
 - Logo após, instale todas as dependencias com:
 ```
-$ npm i
+$ yarn install
 ```
 
 ### Para iniciar um servidor de desenvolvimento
 ```
-$ npm run serve
+$ yarn dev
 ```
 
-### Para rodar a api mock é nescessario instalar o Json Server
+### Para iniciar api mock 
 ```
-$ npm install -g json-server
-
-- Logo após execute o comando pra rodar a api:
-
-$ json-server --watch db.json --port 3004
+$ yarn server
 ```
 ### API e endpoints usado no projeto:
 ```
@@ -65,8 +61,9 @@ $ json-server --watch db.json --port 3004
 
 ### Tecnologias e bibliotecas usadas no projeto: 
 ```
-- React
+- React & TypeScript
 - Styled Coponents
+- Input Mask
 - Axios 
 - Json Server
 ```
