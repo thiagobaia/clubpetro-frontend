@@ -21,7 +21,7 @@ Quando o usuário clicar em "Adicionar", o formulário deverá ser resetado e o 
 - O Layout apresentado na imagem abaixo pode ser encontrado no [Figma](https://www.figma.com/file/IC0xt3K3X21rLEfLRQ3mpl/Lugares-que-quero-conhecer?node-id=0%3A1);
 
 
-<img src="./img/challenge.png" alt="Desafio" >
+<img src="src/img/icons/challenge.png" alt="Desafio" >
 
 ## Começando
 
